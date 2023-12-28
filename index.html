@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="shortcut icon"
+      href="https://static-cdn.jtvnw.net/jtv_user_pictures/cb92da9f-b84b-4439-ae48-49d330acc55d-profile_image-70x70.png"
+      type="image/x-icon"
+    />
+    <title>Shefter Installer</title>
+  </head>
+  <body>
+    <style>
+      * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
+    body {
+          overflow: hidden;
+        background-color: #444;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: auto;
+      }
+      .loader {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        position: fixed;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: #444;
+        z-index: 1000;
+        top: 0;
+        transition: all 0.5s;
+      }
+      .loader.hidde {
+        top: -100vh;
+        transition: all 0.5s;
+      }
+      .load {
+        width: 10vh;
+        height: 10vh;
+        border-radius: 3vh;
+        animation: rotator-loop infinite 1.5s ease-in-out;
+      }
+      .img {
+        width: 9vh;
+        height: 9vh;
+        margin-top: -9.5vh;
+        margin-left: -4.5vh;
+        position: absolute;
+        animation: zoom-loop infinite 1.5s ease-in-out;
+      }
+      .main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        position: relative;
+        height: 100vh;
+      }
+      .main::after {
+        position: absolute;
+        content: "";
+        left: 33vw;
+        top: 10vh;
+        height: 80vh;
+        width: 0.5vh;
+        background: rgb(255, 255, 255);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0) 10%,
+          rgba(172, 185, 197, .3) 50%,
+          rgba(255, 255, 255, 0) 90%
+        );
+      }
+      .main::before {
+        position: absolute;
+        content: "";
+        right: 33vw;
+        top: 10vh;
+        height: 80vh;
+        width: 0.5vh;
+        background: rgb(255, 255, 255);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0) 10%,
+          rgba(172, 185, 197, .3) 50%,
+          rgba(255, 255, 255, 0) 90%
+        );
+      }
+      .main section {
+        width: 25vw;
+        display: flex;
+        border-radius: 2vh;
+        font-family: "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+        font-size: 1.2vw;
+        font-weight: 100;
+        box-shadow: -0.5vh 0.3vh 0.5vh #000000;
+        margin-bottom: 2vh;
+        padding: 1vh 2vw;
+        background-color: rgba(172, 185, 197, .3);
+        cursor: pointer;
+        transition: all 0.2s;
+        &:hover {
+          transform: scale(0.97);
+          transition: all 0.2s;
+        }
+        &.item1:active {
+          background-color: #ff1b2d;
+          color: #eee;
+        }
+        &.item2:active {
+          background-color: #5765f2;
+          color: #eee;
+        }
+        &.item3:active {
+          background-color: #231f20;
+          color: #eee;
+        }
+        &.item4:active {
+          background-color: #23a9f2;
+          color: #eee;
+        }
+        &.item5:active {
+          background-color: #c35600;
+          color: #eee;
+        }
+        &.item6:active {
+          background-color: #343433;
+          color: #eee;
+        }
+        &.item7:active {
+          background-color: #000;
+          color: #eee;
+        }
+        &.item8:active {
+          background-color: #3390ec;
+          color: #eee;
+        }
+        &.item9:active {
+          background-color: #ffab00;
+          color: #eee;
+        }
+        &.item10:active {
+          background-color: #29d968;
+          color: #eee;
+        }
+      }
+      .main section img {
+        width: 2vw;
+        height: 2vw;
+        filter: drop-shadow(0.3vh 0.3vh 0.1vh #fff);
+      }
+      .main section p {
+        width: 28vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .opera {
+        width: 100%;
+        height: 100vh;
+        background-color: #ff1b2d;
+      }
+      .discord {
+        width: 100%;
+        height: 100vh;
+        background-color: #5765f2;
+      }
+      .steam {
+        width: 100%;
+        height: 100vh;
+        background-color: #231f20;
+      }
+      .vs-code {
+        width: 100%;
+        height: 100vh;
+        background-color: #23a9f2;
+      }
+      .vlc {
+        width: 100%;
+        height: 100vh;
+        background-color: #c35600;
+      }
+      .epic {
+        width: 100%;
+        height: 100vh;
+        background-color: #343433;
+      }
+      .zip {
+        width: 100%;
+        height: 100vh;
+        background-color: #000;
+      }
+      .telegram {
+        width: 100%;
+        height: 100vh;
+        background-color: #3390ec;
+      }
+      .rockstar {
+        width: 100%;
+        height: 100vh;
+        background-color: #ffab00;
+      }
+      .spotify {
+        width: 100%;
+        height: 100vh;
+        background-color: #29d968;
+      }
+      .back {
+        width: 7vh;
+        height: 7vh;
+        border-radius: 1vh;
+        position: absolute;
+        margin-top: 7vh;
+        left: 5vh;
+        border: #000 solid 0.1vh;
+        transition: all 0.2s;
+        background-color: rgba(172, 185, 197, .5);
+        cursor: pointer;
+        z-index: 900;
+        &:hover {
+          transform: scale(0.9);
+          transition: all 0.2s;
+        }
+      }
+      .back::after {
+        content: "";
+        border-radius: 2vh;
+        width: 3vh;
+        height: 0.3vh;
+        margin-left: 1.7vh;
+        margin-top: 4.2vh;
+        transform: rotate(40deg);
+        position: absolute;
+        background-color: #222;
+      }
+      .back::before {
+        content: "";
+        border-radius: 2vh;
+        width: 3vh;
+        height: 0.3vh;
+        margin-left: 1.7vh;
+        margin-top: 2.5vh;
+        transform: rotate(-40deg);
+        position: absolute;
+        background-color: #222;
+      }
+      section.content {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        position: relative;
+      }
+      section.content img {
+        display: block;
+        width: 10vh;
+        height: 10vh;
+        border-bottom: #eee solid 0.7vh;
+        border-top: rgba(0, 0, 0, 0.3) solid 0.7vh;
+        border-left: solid rgba(0, 0, 0, 0.1) 0.2vh;
+        border-right: solid rgba(0, 0, 0, 0.1) 0.2vh;
+        border-radius: 1vh;
+        background-color: rgba(0, 0, 0, 0.2);
+        padding: 2vh 2.2vh;
+        margin: 5vh;
+      }
+      section.content a {
+        color: #eee;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 2vh;
+        text-decoration: none;
+        font-family: monospace;
+      }
+      section.content p.tooltip {
+        background-color: rgba(0, 0, 0, 0.3);
+        margin: 3vh;
+        color: #eee;
+        padding: 1vh;
+        font-family: monospace;
+
+        opacity: 0;
+        transition: all 0.2s;
+        border-radius: 1vh;
+
+        ::after {
+          content: "";
+          position: absolute;
+          width: 2vh;
+          height: 2vh;
+          left: calc(50% - 1vh);
+          margin-top: -3vh;
+          clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+          background-color: rgba(0, 0, 0, 0.3);
+        }
+      }
+      section.content p.tooltip span {
+        text-decoration: underline;
+      }
+      section.content a:hover + .tooltip {
+        opacity: 1;
+        transition: all 0.2s;
+      }
+      @keyframes rotator-loop {
+        0% {
+          transform: rotate(0deg);
+          transition: all 0.5s;
+          border-top: #29d968 solid 0.5vh;
+          border-bottom: none;
+        }
+        50% {
+          transform: rotate(180deg);
+          transition: all 0.5s;
+          border-bottom: #23a9f2 solid 0.5vh;
+          border-top: none;
+        }
+        100% {
+          transform: rotate(0deg);
+          transition: all 0.5s;
+          border-top: #29d968 solid 0.5vh;
+          border-bottom: none;
+        }
+      }
+      @keyframes zoom-loop {
+        0% {
+          transform: scale(0.8);
+        }
+        75% {
+          transform: scale(1);
+        }
+        100% {
+          transform: scale(0.8);
+        }
+      }
+    </style>
+
+    <div class="loader hidde" id="loader">
+      <div class="load"></div>
+      <div class="logo">
+        <img
+          class="img"
+          src="https://static-cdn.jtvnw.net/jtv_user_pictures/cb92da9f-b84b-4439-ae48-49d330acc55d-profile_image-70x70.png"
+        />
+      </div>
+    </div>
+
+    <div class="main" id="main">
+      <section class="item1" onclick="to_opera()">
+        <img
+          src="https://cdn-production-opera-website.operacdn.com/staticfiles/assets/images/logo/logo-flat.724a32ec0873.svg"
+        />
+        <p class="desc1">OPERA</p>
+      </section>
+      <section class="item2" onclick="to_discord()">
+        <img
+          src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/62fddf0fde45a8baedcc7ee5_847541504914fd33810e70a0ea73177e%20(2)-1.png"
+        />
+        <p class="desc2">DISCORD</p>
+      </section>
+      <section class="item3" onclick="to_steam()">
+        <img
+          src="https://help.steampowered.com/public/shared/images/responsive/share_steam_logo.png"
+        />
+        <p class="desc3">STEAM</p>
+      </section>
+      <section class="item4" onclick="to_vs()">
+        <img src="https://code.visualstudio.com/favicon.ico" />
+        <p class="desc4">VS CODE</p>
+      </section>
+      <section class="item5" onclick="to_vlc()">
+        <img src="https://images.videolan.org/images/icons-VLC/vlc.mini.svg" />
+        <p class="desc5">VLC PLAYER</p>
+      </section>
+      <section class="item6" onclick="to_epic()">
+        <img src="https://www.epicgames.com/favicon.ico" />
+        <p class="desc6">EPIC GAMES</p>
+      </section>
+      <section class="item7" onclick="to_zip()">
+        <img src="https://www.7-zip.org/favicon.ico" />
+        <p class="desc7">7-ZIP</p>
+      </section>
+      <section class="item8" onclick="to_telegram()">
+        <img src="https://web.telegram.org/k/assets/img/favicon.ico" />
+        <p class="desc8">TELEGRAM</p>
+      </section>
+      <section class="item9" onclick="to_rockstar()">
+        <img
+          src="https://cdn.cookielaw.org/logos/3efb95b4-aed7-4aa8-85d8-488eb074fa8c/8d9316c1-2ab6-4a2f-9582-ad18d8bfede6/4439df62-7489-4d15-b892-f1b5b6dd029d/Rockstar_Games_Logo.png"
+        />
+        <p class="desc9">ROCKSTAR</p>
+      </section>
+      <section class="item10" onclick="to_spotify()">
+        <img
+          src="https://open.spotifycdn.com/cdn/images/favicon32.b64ecc03.png"
+        />
+        <p class="desc10">SPOTIFY</p>
+      </section>
+    </div>
+
+    <div class="opera" id="opera">
+      <div class="back" onclick="to_main()"></div>
+      <section class="content">
+        <img
+          src="https://cdn-production-opera-website.operacdn.com/staticfiles/assets/images/logo/logo-flat.724a32ec0873.svg"
+        />
+        <a href="https://net.geo.opera.com/opera/stable/windows" target="_blank">DESCARGAR</a>
+        <p class="tooltip">
+          Descarga Oficial de la pagina web '<span>www.opera.com</span>'
+        </p>
+      </section>
+    </div>
+
+    <div class="discord" id="discord">
+      <div class="back" onclick="to_main()"></div>
+      <section class="content">
+        <img src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/62fddf0fde45a8baedcc7ee5_847541504914fd33810e70a0ea73177e%20(2)-1.png" />
+        <a href="https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x86" target="_blank">DESCARGAR</a>
+        <p class="tooltip">
+          Descarga Oficial de la pagina web '<span>discord.com</span>'
+        </p>
+      </section>
+    </div>
+
+    <div class="steam" id="steam">
+      <div class="back" onclick="to_main()"></div>
+      <section class="content">
+        <img src="https://help.steampowered.com/public/shared/images/responsive/share_steam_logo.png" />
+        <a href="https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe" target="_blank">DESCARGAR</a>
+        <p class="tooltip">
+          Descarga Oficial de la pagina web '<span>store.steampowered.com</span>'
+        </p>
+      </section>
+    </div>
+
+    <div class="vs-code" id="vs-code">
+      <div class="back" onclick="to_main()"></div>
+      <section class="content">
+        <img src="https://code.visualstudio.com/favicon.ico" />
+        <a href="https://code.visualstudio.com/sha/download?build=stable&os=win32-x64-user" target="_blank">DESCARGAR</a>
+        <p class="tooltip">
+          Descarga Oficial de la pagina web '<span>code.visualstudio.com</span>'
+        </p>
+      </section>
+    </div>
+
+    <div class="vlc" id="vlc">
+      <div class="back" onclick="to_main()"></div>
+      <section class="content">
+        <img src="https://images.videolan.org/images/icons-VLC/vlc.mini.svg" />
+        <a href="https://espejito.fder.edu.uy/videolan/vlc/3.0.16/win64/vlc-3.0.16-win64.exe" target="_blank">DESCARGAR</a>
+        <p class="tooltip">
+          Descarga Oficial de la pagina web '<span>www.videolan.org</span>'
+        </p>
+      </section>
+    </div>
+
+    <div class="epic" id="epic">
+      <div class="back" onclick="to_main()"></div>
+      <section class="content">
+        <img src="https://www.epicgames.com/favicon.ico" />
+        <a href="https://launcher-public-service-prod06.ol.epicgames.com/launcher/api/installer/download/EpicGamesLauncherInstaller.msi" target="_blank">DESCARGAR</a>
+        <p class="tooltip">
+          Descarga Oficial de la pagina web '<span>www.epicgames.com</span>'
+        </p>
+      </section>
+    </div>
+
+    <div class="zip" id="zip">
+      <div class="back" onclick="to_main()"></div>
+      <section class="content">
+        <img src="https://www.7-zip.org/favicon.ico" />
+        <a href="https://www.7-zip.org/a/7z2107-x64.exe" target="_blank">DESCARGAR</a>
+        <p class="tooltip">
+          Descarga Oficial de la pagina web '<span>www.7-zip.org</span>'
+        </p>
+      </section>
+    </div>
+
+    <div class="telegram" id="telegram">
+      <div class="back" onclick="to_main()"></div>
+      <section class="content">
+        <img src="https://web.telegram.org/k/assets/img/favicon.ico" />
+        <a href="https://telegram.org/dl/desktop/win64" target="_blank">DESCARGAR</a>
+        <p class="tooltip">
+          Descarga Oficial de la pagina web '<span>www.telegram.org</span>'
+        </p>
+      </section>
+    </div>
+
+    <div class="rockstar" id="rockstar">
+      <div class="back" onclick="to_main()"></div>
+      <section class="content">
+        <img src="https://cdn.cookielaw.org/logos/3efb95b4-aed7-4aa8-85d8-488eb074fa8c/8d9316c1-2ab6-4a2f-9582-ad18d8bfede6/4439df62-7489-4d15-b892-f1b5b6dd029d/Rockstar_Games_Logo.png" />
+        <a href="https://gamedownloads.rockstargames.com/public/installer/Rockstar-Games-Launcher.exe" target="_blank">DESCARGAR</a>
+        <p class="tooltip">
+          Descarga Oficial de la pagina web '<span>www.rockstargames.com</span>'
+        </p>
+      </section>
+    </div>
+
+    <div class="spotify" id="spotify">
+      <div class="back" onclick="to_main()"></div>
+      <section class="content">
+        <img src="https://open.spotifycdn.com/cdn/images/favicon32.b64ecc03.png" />
+        <a href="https://download.scdn.co/SpotifySetup.exe" target="_blank">DESCARGAR</a>
+        <p class="tooltip">
+          Descarga Oficial de la pagina web '<span>open.spotify.com</span>'
+        </p>
+      </section>
+    </div>
+
+    <script>
+      function to_main() {
+        // Mostrar el elemento
+        var elementoMostrado = document.getElementById("loader");
+        elementoMostrado.classList.remove("hidde");
+
+        // Hacer scroll hasta un elemento con un ID específico (en este caso, 'destinoScroll')
+        setTimeout(function () {
+          var elementoDestino = document.getElementById("main");
+          elementoDestino.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+
+        // Después de 2 segundos, agregar la clase 'oculto' para iniciar la transición de desvanecimiento
+        setTimeout(function () {
+          elementoMostrado.classList.add("hidde");
+        }, 2000);
+      }
+      function to_opera() {
+        // Mostrar el elemento
+        var elementoMostrado = document.getElementById("loader");
+        elementoMostrado.classList.remove("hidde");
+
+        // Hacer scroll hasta un elemento con un ID específico (en este caso, 'destinoScroll')
+        setTimeout(function () {
+          var elementoDestino = document.getElementById("opera");
+          elementoDestino.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+
+        // Después de 2 segundos, agregar la clase 'oculto' para iniciar la transición de desvanecimiento
+        setTimeout(function () {
+          elementoMostrado.classList.add("hidde");
+        }, 2000);
+      }
+      function to_discord() {
+        // Mostrar el elemento
+        var elementoMostrado = document.getElementById("loader");
+        elementoMostrado.classList.remove("hidde");
+
+        // Hacer scroll hasta un elemento con un ID específico (en este caso, 'destinoScroll')
+        setTimeout(function () {
+          var elementoDestino = document.getElementById("discord");
+          elementoDestino.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+
+        // Después de 2 segundos, agregar la clase 'oculto' para iniciar la transición de desvanecimiento
+        setTimeout(function () {
+          elementoMostrado.classList.add("hidde");
+        }, 2000);
+      }
+      function to_steam() {
+        // Mostrar el elemento
+        var elementoMostrado = document.getElementById("loader");
+        elementoMostrado.classList.remove("hidde");
+
+        // Hacer scroll hasta un elemento con un ID específico (en este caso, 'destinoScroll')
+        setTimeout(function () {
+          var elementoDestino = document.getElementById("steam");
+          elementoDestino.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+
+        // Después de 2 segundos, agregar la clase 'oculto' para iniciar la transición de desvanecimiento
+        setTimeout(function () {
+          elementoMostrado.classList.add("hidde");
+        }, 2000);
+      }
+      function to_vs() {
+        // Mostrar el elemento
+        var elementoMostrado = document.getElementById("loader");
+        elementoMostrado.classList.remove("hidde");
+
+        // Hacer scroll hasta un elemento con un ID específico (en este caso, 'destinoScroll')
+        setTimeout(function () {
+          var elementoDestino = document.getElementById("vs-code");
+          elementoDestino.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+
+        // Después de 2 segundos, agregar la clase 'oculto' para iniciar la transición de desvanecimiento
+        setTimeout(function () {
+          elementoMostrado.classList.add("hidde");
+        }, 2000);
+      }
+      function to_vlc() {
+        // Mostrar el elemento
+        var elementoMostrado = document.getElementById("loader");
+        elementoMostrado.classList.remove("hidde");
+
+        // Hacer scroll hasta un elemento con un ID específico (en este caso, 'destinoScroll')
+        setTimeout(function () {
+          var elementoDestino = document.getElementById("vlc");
+          elementoDestino.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+
+        // Después de 2 segundos, agregar la clase 'oculto' para iniciar la transición de desvanecimiento
+        setTimeout(function () {
+          elementoMostrado.classList.add("hidde");
+        }, 2000);
+      }
+      function to_epic() {
+        // Mostrar el elemento
+        var elementoMostrado = document.getElementById("loader");
+        elementoMostrado.classList.remove("hidde");
+
+        // Hacer scroll hasta un elemento con un ID específico (en este caso, 'destinoScroll')
+        setTimeout(function () {
+          var elementoDestino = document.getElementById("epic");
+          elementoDestino.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+
+        // Después de 2 segundos, agregar la clase 'oculto' para iniciar la transición de desvanecimiento
+        setTimeout(function () {
+          elementoMostrado.classList.add("hidde");
+        }, 2000);
+      }
+      function to_zip() {
+        // Mostrar el elemento
+        var elementoMostrado = document.getElementById("loader");
+        elementoMostrado.classList.remove("hidde");
+
+        // Hacer scroll hasta un elemento con un ID específico (en este caso, 'destinoScroll')
+        setTimeout(function () {
+          var elementoDestino = document.getElementById("zip");
+          elementoDestino.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+
+        // Después de 2 segundos, agregar la clase 'oculto' para iniciar la transición de desvanecimiento
+        setTimeout(function () {
+          elementoMostrado.classList.add("hidde");
+        }, 2000);
+      }
+      function to_telegram() {
+        // Mostrar el elemento
+        var elementoMostrado = document.getElementById("loader");
+        elementoMostrado.classList.remove("hidde");
+
+        // Hacer scroll hasta un elemento con un ID específico (en este caso, 'destinoScroll')
+        setTimeout(function () {
+          var elementoDestino = document.getElementById("telegram");
+          elementoDestino.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+
+        // Después de 2 segundos, agregar la clase 'oculto' para iniciar la transición de desvanecimiento
+        setTimeout(function () {
+          elementoMostrado.classList.add("hidde");
+        }, 2000);
+      }
+      function to_rockstar() {
+        // Mostrar el elemento
+        var elementoMostrado = document.getElementById("loader");
+        elementoMostrado.classList.remove("hidde");
+
+        // Hacer scroll hasta un elemento con un ID específico (en este caso, 'destinoScroll')
+        setTimeout(function () {
+          var elementoDestino = document.getElementById("rockstar");
+          elementoDestino.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+
+        // Después de 2 segundos, agregar la clase 'oculto' para iniciar la transición de desvanecimiento
+        setTimeout(function () {
+          elementoMostrado.classList.add("hidde");
+        }, 2000);
+      }
+      function to_spotify() {
+        // Mostrar el elemento
+        var elementoMostrado = document.getElementById("loader");
+        elementoMostrado.classList.remove("hidde");
+
+        // Hacer scroll hasta un elemento con un ID específico (en este caso, 'destinoScroll')
+        setTimeout(function () {
+          var elementoDestino = document.getElementById("spotify");
+          elementoDestino.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+
+        // Después de 2 segundos, agregar la clase 'oculto' para iniciar la transición de desvanecimiento
+        setTimeout(function () {
+          elementoMostrado.classList.add("hidde");
+        }, 2000);
+      }
+    </script>
+  </body>
+</html>
